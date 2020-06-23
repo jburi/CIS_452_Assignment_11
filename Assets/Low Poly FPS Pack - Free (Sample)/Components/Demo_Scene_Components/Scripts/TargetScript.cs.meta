@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cbc4c318247cfe2428546d89544fe5d1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - upSound: {fileID: 8300000, guid: 83ed69ca21a297b4ab15a1e89abd4e4b, type: 3}
+  - downSound: {fileID: 8300000, guid: 0a3d74157d2f1714894e1358632773c8, type: 3}
+  - audioSource: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
