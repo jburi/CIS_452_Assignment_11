@@ -5,8 +5,6 @@
 * Handles all of the functions for the facade
 */
 
-//GameManager.cs
-
 using FPSControllerLPFP;
 using System;
 using System.Collections;
@@ -18,7 +16,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     //Game Prefabs
-    public Target_Prefab target;
+    public GameObject target;
     public List<Transform> targetSpawnpoints;
     public Text winLoss;
 
@@ -27,7 +25,7 @@ public class GameManager : MonoBehaviour
     public Timer gameTimer;
 
     /* Tried to make a constructor but can't with monobehavior
-    public GameManager(Target_Prefab target, List<Transform> transforms, Text text, List<MyTargetScript> targetScripts, Timer timer)
+    public GameManager(GameObject target, List<Transform> transforms, Text text, List<MyTargetScript> targetScripts, Timer timer)
     {
         this.target = target;
         this.targetSpawnpoints = transforms;
@@ -39,10 +37,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        //Checks if every target has been hit (only if targets exist)
         if (IsEveryTargetHit() == true)
         {
             EndGameWin();
         }
+        //If all of the targets are not hit in time then you lose
         else if (gameTimer.timeLeft == 0)
         {
             EndGameLose();
@@ -52,14 +52,12 @@ public class GameManager : MonoBehaviour
     //Facade function
     public void StartGame()
     {
-        //Test Collision
+        //Test Collision function in Play_Facade.cs
         Debug.Log("Start Game");
         
+        //Game Start functions
         SpawnTargets();
         StartTimer();
-
-        //Tried to run a coroutine since the new gamemanager wouldn't use void Update
-        //this.StartCoroutine("EndTheGame"));
     }
 
     //Spawn the targets at the spawnpoints
@@ -88,6 +86,7 @@ public class GameManager : MonoBehaviour
 
     public void StartTimer()
     {
+        //Starts the timer coroutine with the game rather than on start
         gameTimer = FindObjectOfType<Timer>();
         winLoss.text = "";
         gameTimer.StartCoroutine("Countdown");
@@ -98,9 +97,16 @@ public class GameManager : MonoBehaviour
         //Finds all of the targets and destroys them
         foreach (GameObject fooObj in GameObject.FindGameObjectsWithTag("Target"))
         {
+            //Test End Game Win
+            Debug.Log("End Game Win");
+
+            //Remove from the list and destroy all targets
+            targets.Clear();
             Destroy(fooObj);
+
+            //Stops timer and displays win text
             gameTimer.StopAllCoroutines();
-            //StopAllCoroutines();
+            gameTimer.running = false;
             winLoss.text = ("You Win");
             Debug.Log("You Win");
         }
@@ -108,12 +114,19 @@ public class GameManager : MonoBehaviour
 
     public void EndGameLose()
     {
-        //Finds all of the targets and destroys them
+        //Finds all of the targets
         foreach (GameObject fooObj in GameObject.FindGameObjectsWithTag("Target"))
         {
+            //Test End Game Lose
+            Debug.Log("End Game Lose");
+
+            //Remove from the list and destroy all targets
+            targets.Clear();
             Destroy(fooObj);
+
+            //Stops timer and displays loss text
             gameTimer.StopAllCoroutines();
-            //StopAllCoroutines();
+            gameTimer.running = false;
             winLoss.text = ("You Lose");
             Debug.Log("You Lose");
         }
@@ -133,19 +146,5 @@ public class GameManager : MonoBehaviour
 
         //if all the targets are hit
         return true;
-    }
-
-    private IEnumerator EndTheGame()
-    {
-        if (IsEveryTargetHit() == true)
-        {
-            EndGameWin();
-            yield return null;
-        }
-        else if (gameTimer.timeLeft == 0)
-        {
-            EndGameLose();
-            yield return null;
-        }
     }
 }

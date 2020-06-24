@@ -12,17 +12,24 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-	public float timeLeft = 15f;
+    //Variables
+	public float timeLeft = 10f;
 	public Text text_box;
+
+    //Used in Play_Facade.cs to prevent more than one game from starting
     public bool running = false;
 
+    //Countdown Coroutine
     private IEnumerator Countdown()
     {
+        //Test if countdown started
         Debug.Log("Start Countdown");
         running = true;
-        timeLeft = 15f;
-        float duration = timeLeft; // 3 seconds you can change this 
-                                   //to whatever you want
+
+        //Reset time
+        timeLeft = 10f;
+        float duration = timeLeft;
+        //Used as a timer
         float totalTime = 0;
         while (totalTime <= duration)
         {
@@ -31,7 +38,8 @@ public class Timer : MonoBehaviour
             text_box.text = timeLeft.ToString("0.00");
             yield return null;
         }
-        timeLeft = 0f;
+        //Set timeLeft to zero to force the game to end
+        timeLeft = 0.0f;
         running = false;
     }
 }
